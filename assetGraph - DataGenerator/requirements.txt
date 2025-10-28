@@ -1,0 +1,10 @@
+# No external dependencies required
+# This script uses only Python standard library:
+# - json
+# - random
+# - datetime
+# - pathlib
+# - typing
+
+# Python version: 3.7+
+
