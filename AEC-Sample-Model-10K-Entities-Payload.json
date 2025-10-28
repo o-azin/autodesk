@@ -1,0 +1,1283 @@
+{
+  "batchId": "batch-revit-model-10k-entities",
+  "description": "AEC Revit Model with 10,000 entities - Optimized payload structure",
+  "modelStatistics": {
+    "totalEntities": 10000,
+    "modelSize": "22MB (compressed from 77MB P50 model)",
+    "averageAssetSize": "2.2KB",
+    "batchCount": 400,
+    "entitiesPerBatch": 25
+  },
+  "entityDistribution": {
+    "walls": 2300,
+    "doors": 400,
+    "windows": 600,
+    "rooms": 850,
+    "mepComponents": 2000,
+    "structuralElements": 1150,
+    "furniture": 2300,
+    "fixtures": 400
+  },
+  "commands": [
+    {
+      "commandType": "CreateAssets",
+      "batchNumber": 1,
+      "assets": [
+        {
+          "id": "wall-ext-north-001",
+          "type": "autodesk.revit:wall-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "e7d0c1a2-3b4c-5d6e-7f8g-9h0i1j2k3l4m-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "316001"},
+                  "categoryId": {"typeId": "String", "value": "OST_Walls"},
+                  "phaseCreated": {"typeId": "String", "value": "New Construction"},
+                  "phaseDemo": {"typeId": "String", "value": "None"}
+                }
+              },
+              "wallProperties": {
+                "typeId": "autodesk.revit:wall-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Exterior Wall"},
+                  "typeName": {"typeId": "String", "value": "Brick on CMU"},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "roomBounding": {"typeId": "Bool", "value": true},
+                  "fireRating": {"typeId": "String", "value": "2HR"}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 0, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [20, 0.75, 12]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "area": {
+                        "typeId": "autodesk.revit.parameter:area-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 240.0},
+                          "unit": {"typeId": "String", "value": "sqft"}
+                        }
+                      },
+                      "volume": {
+                        "typeId": "autodesk.revit.parameter:volume-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 180.0},
+                          "unit": {"typeId": "String", "value": "cuft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "wall-ext-north-002",
+          "type": "autodesk.revit:wall-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "e7d0c1a2-3b4c-5d6e-7f8g-9h0i1j2k3l4m-002"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "316002"},
+                  "categoryId": {"typeId": "String", "value": "OST_Walls"},
+                  "phaseCreated": {"typeId": "String", "value": "New Construction"}
+                }
+              },
+              "wallProperties": {
+                "typeId": "autodesk.revit:wall-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Exterior Wall"},
+                  "typeName": {"typeId": "String", "value": "Brick on CMU"},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "roomBounding": {"typeId": "Bool", "value": true}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [20, 0, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [40, 0.75, 12]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "area": {
+                        "typeId": "autodesk.revit.parameter:area-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 240.0},
+                          "unit": {"typeId": "String", "value": "sqft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "wall-int-001",
+          "type": "autodesk.revit:wall-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "e7d0c1a2-3b4c-5d6e-7f8g-9h0i1j2k3l4m-003"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "316003"},
+                  "categoryId": {"typeId": "String", "value": "OST_Walls"}
+                }
+              },
+              "wallProperties": {
+                "typeId": "autodesk.revit:wall-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Interior Wall"},
+                  "typeName": {"typeId": "String", "value": "Generic - 6\""},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "roomBounding": {"typeId": "Bool", "value": true}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 10, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [15, 10.5, 12]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "area": {
+                        "typeId": "autodesk.revit.parameter:area-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 180.0},
+                          "unit": {"typeId": "String", "value": "sqft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "door-entry-001",
+          "type": "autodesk.revit:door-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "f8e1d2b3-4c5d-6e7f-8g9h-0i1j2k3l4m5n-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "318001"},
+                  "categoryId": {"typeId": "String", "value": "OST_Doors"},
+                  "hostElementId": {"typeId": "String", "value": "316001"}
+                }
+              },
+              "doorProperties": {
+                "typeId": "autodesk.revit:door-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Single-Flush"},
+                  "typeName": {"typeId": "String", "value": "36\" x 84\""},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "roomBounding": {"typeId": "Bool", "value": false}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 0, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [3, 0.17, 7]},
+                  "insertionPoint": {"typeId": "Point3d", "value": [10, 0, 0]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "width": {
+                        "typeId": "autodesk.revit.parameter:width-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 3.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      },
+                      "height": {
+                        "typeId": "autodesk.revit.parameter:height-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 7.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "window-001",
+          "type": "autodesk.revit:window-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "g9f2e3d4-5c6d-7e8f-9g0h-1i2j3k4l5m6n-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "319001"},
+                  "categoryId": {"typeId": "String", "value": "OST_Windows"},
+                  "hostElementId": {"typeId": "String", "value": "316001"}
+                }
+              },
+              "windowProperties": {
+                "typeId": "autodesk.revit:window-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Fixed"},
+                  "typeName": {"typeId": "String", "value": "48\" x 72\""},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "roomBounding": {"typeId": "Bool", "value": false}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 0, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [4, 0.17, 6]},
+                  "insertionPoint": {"typeId": "Point3d", "value": [15, 0, 3]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "width": {
+                        "typeId": "autodesk.revit.parameter:width-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 4.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      },
+                      "height": {
+                        "typeId": "autodesk.revit.parameter:height-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 6.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "room-101",
+          "type": "autodesk.revit:room-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "h0g3f4e5-6d7e-8f9g-0h1i-2j3k4l5m6n7o-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "320001"},
+                  "categoryId": {"typeId": "String", "value": "OST_Rooms"},
+                  "level": {"typeId": "String", "value": "Level 1"}
+                }
+              },
+              "roomProperties": {
+                "typeId": "autodesk.revit:room-properties-1.0.0",
+                "staticChildren": {
+                  "name": {"typeId": "String", "value": "Office 101"},
+                  "number": {"typeId": "String", "value": "101"},
+                  "department": {"typeId": "String", "value": "Administration"},
+                  "occupancyType": {"typeId": "String", "value": "Office"},
+                  "occupantLoad": {"typeId": "Int32", "value": 4}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 0, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [12, 10, 9]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "area": {
+                        "typeId": "autodesk.revit.parameter:area-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 120.0},
+                          "unit": {"typeId": "String", "value": "sqft"}
+                        }
+                      },
+                      "volume": {
+                        "typeId": "autodesk.revit.parameter:volume-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 1080.0},
+                          "unit": {"typeId": "String", "value": "cuft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "hvac-vav-101",
+          "type": "autodesk.mep:hvac-terminal-1.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "i1h4g5f6-7e8f-9g0h-1i2j-3k4l5m6n7o8p-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "325001"},
+                  "categoryId": {"typeId": "String", "value": "OST_DuctTerminal"},
+                  "mechanicalSystem": {"typeId": "String", "value": "HVAC-1"}
+                }
+              },
+              "hvacProperties": {
+                "typeId": "autodesk.mep:hvac-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "VAV Terminal"},
+                  "typeName": {"typeId": "String", "value": "VAV w/ Reheat - 350 CFM"},
+                  "systemName": {"typeId": "String", "value": "Supply Air System 1"},
+                  "servedSpace": {"typeId": "String", "value": "Office 101"}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 0, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [2, 1.5, 1]},
+                  "insertionPoint": {"typeId": "Point3d", "value": [6, 5, 8.5]}
+                }
+              },
+              "performance": {
+                "typeId": "autodesk.mep:hvac-performance-1.0.0",
+                "staticChildren": {
+                  "maxAirflow": {"typeId": "Float64", "value": 350.0},
+                  "minAirflow": {"typeId": "Float64", "value": 70.0},
+                  "heatingCapacity": {"typeId": "Float64", "value": 1500.0}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "airflow": {
+                        "typeId": "autodesk.mep.parameter:airflow-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 280.0},
+                          "unit": {"typeId": "String", "value": "CFM"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "structural-beam-001",
+          "type": "autodesk.revit:structural-framing-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "j2i5h6g7-8f9g-0h1i-2j3k-4l5m6n7o8p9q-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "330001"},
+                  "categoryId": {"typeId": "String", "value": "OST_StructuralFraming"}
+                }
+              },
+              "structuralProperties": {
+                "typeId": "autodesk.revit:structural-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "W-Wide Flange"},
+                  "typeName": {"typeId": "String", "value": "W12X26"},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "structuralMaterial": {"typeId": "String", "value": "Steel"}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 0, 9]},
+                  "maxPoint": {"typeId": "Point3d", "value": [20, 1, 10]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "length": {
+                        "typeId": "autodesk.revit.parameter:length-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 20.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "furniture-desk-001",
+          "type": "autodesk.revit:furniture-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "k3j6i7h8-9g0h-1i2j-3k4l-5m6n7o8p9q0r-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "340001"},
+                  "categoryId": {"typeId": "String", "value": "OST_Furniture"}
+                }
+              },
+              "furnitureProperties": {
+                "typeId": "autodesk.revit:furniture-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Desk"},
+                  "typeName": {"typeId": "String", "value": "60\" x 30\""},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "manufacturer": {"typeId": "String", "value": "Herman Miller"}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [2, 2, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [7, 4.5, 2.5]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "width": {
+                        "typeId": "autodesk.revit.parameter:width-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 5.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      },
+                      "depth": {
+                        "typeId": "autodesk.revit.parameter:depth-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 2.5},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "lighting-fixture-001",
+          "type": "autodesk.revit:lighting-fixture-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "l4k7j8i9-0h1i-2j3k-4l5m-6n7o8p9q0r1s-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "350001"},
+                  "categoryId": {"typeId": "String", "value": "OST_LightingFixtures"}
+                }
+              },
+              "lightingProperties": {
+                "typeId": "autodesk.revit:lighting-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Troffer Light"},
+                  "typeName": {"typeId": "String", "value": "2x4 LED - 40W"},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "wattage": {"typeId": "Float64", "value": 40.0}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [4, 4, 8.5]},
+                  "maxPoint": {"typeId": "Point3d", "value": [6, 8, 9]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "luminousFlux": {
+                        "typeId": "autodesk.electrical.parameter:luminousFlux-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 4000.0},
+                          "unit": {"typeId": "String", "value": "lm"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "electrical-outlet-001",
+          "type": "autodesk.revit:electrical-fixture-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "m5l8k9j0-1i2j-3k4l-5m6n-7o8p9q0r1s2t-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "360001"},
+                  "categoryId": {"typeId": "String", "value": "OST_ElectricalFixtures"}
+                }
+              },
+              "electricalProperties": {
+                "typeId": "autodesk.revit:electrical-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Duplex Receptacle"},
+                  "typeName": {"typeId": "String", "value": "NEMA 5-20R"},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "voltage": {"typeId": "Float64", "value": 120.0},
+                  "amperage": {"typeId": "Float64", "value": 20.0}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 5, 1]},
+                  "maxPoint": {"typeId": "Point3d", "value": [0.2, 5.3, 1.5]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "circuitNumber": {
+                        "typeId": "autodesk.electrical.parameter:circuitNumber-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "String", "value": "A12"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "plumbing-fixture-001",
+          "type": "autodesk.revit:plumbing-fixture-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "n6m9l0k1-2j3k-4l5m-6n7o-8p9q0r1s2t3u-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "370001"},
+                  "categoryId": {"typeId": "String", "value": "OST_PlumbingFixtures"}
+                }
+              },
+              "plumbingProperties": {
+                "typeId": "autodesk.revit:plumbing-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Lavatory"},
+                  "typeName": {"typeId": "String", "value": "Rectangular - 24\" x 18\""},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "manufacturer": {"typeId": "String", "value": "Kohler"}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [35, 2, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [37, 3.5, 2.8]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "flowRate": {
+                        "typeId": "autodesk.plumbing.parameter:flowRate-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 2.2},
+                          "unit": {"typeId": "String", "value": "gpm"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "floor-001",
+          "type": "autodesk.revit:floor-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "o7n0m1l2-3k4l-5m6n-7o8p-9q0r1s2t3u4v-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "380001"},
+                  "categoryId": {"typeId": "String", "value": "OST_Floors"}
+                }
+              },
+              "floorProperties": {
+                "typeId": "autodesk.revit:floor-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Generic Floor"},
+                  "typeName": {"typeId": "String", "value": "6\" Concrete Slab"},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "structural": {"typeId": "Bool", "value": true}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 0, -0.5]},
+                  "maxPoint": {"typeId": "Point3d", "value": [40, 20, 0]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "area": {
+                        "typeId": "autodesk.revit.parameter:area-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 800.0},
+                          "unit": {"typeId": "String", "value": "sqft"}
+                        }
+                      },
+                      "thickness": {
+                        "typeId": "autodesk.revit.parameter:thickness-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 0.5},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "ceiling-001",
+          "type": "autodesk.revit:ceiling-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "p8o1n2m3-4l5m-6n7o-8p9q-0r1s2t3u4v5w-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "390001"},
+                  "categoryId": {"typeId": "String", "value": "OST_Ceilings"}
+                }
+              },
+              "ceilingProperties": {
+                "typeId": "autodesk.revit:ceiling-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Compound Ceiling"},
+                  "typeName": {"typeId": "String", "value": "2x2 ACT System"},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "height": {"typeId": "Float64", "value": 8.5}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 0, 8.5]},
+                  "maxPoint": {"typeId": "Point3d", "value": [15, 10, 8.67]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "area": {
+                        "typeId": "autodesk.revit.parameter:area-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 150.0},
+                          "unit": {"typeId": "String", "value": "sqft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "duct-001",
+          "type": "autodesk.mep:duct-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "q9p2o3n4-5m6n-7o8p-9q0r-1s2t3u4v5w6x-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "400001"},
+                  "categoryId": {"typeId": "String", "value": "OST_DuctCurves"},
+                  "mechanicalSystem": {"typeId": "String", "value": "HVAC-1"}
+                }
+              },
+              "ductProperties": {
+                "typeId": "autodesk.mep:duct-properties-1.0.0",
+                "staticChildren": {
+                  "systemName": {"typeId": "String", "value": "Supply Air System 1"},
+                  "ductType": {"typeId": "String", "value": "Supply Air"},
+                  "shape": {"typeId": "String", "value": "Rectangular"},
+                  "width": {"typeId": "Float64", "value": 12.0},
+                  "height": {"typeId": "Float64", "value": 8.0}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 5, 8.5]},
+                  "maxPoint": {"typeId": "Point3d", "value": [15, 5.67, 9.17]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "flow": {
+                        "typeId": "autodesk.mep.parameter:airflow-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 1200.0},
+                          "unit": {"typeId": "String", "value": "CFM"}
+                        }
+                      },
+                      "length": {
+                        "typeId": "autodesk.revit.parameter:length-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 15.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "pipe-001",
+          "type": "autodesk.mep:pipe-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "r0q3p4o5-6n7o-8p9q-0r1s-2t3u4v5w6x7y-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "410001"},
+                  "categoryId": {"typeId": "String", "value": "OST_PipeCurves"}
+                }
+              },
+              "pipeProperties": {
+                "typeId": "autodesk.mep:pipe-properties-1.0.0",
+                "staticChildren": {
+                  "systemName": {"typeId": "String", "value": "Domestic Cold Water"},
+                  "pipeType": {"typeId": "String", "value": "Domestic Cold Water"},
+                  "material": {"typeId": "String", "value": "Copper"},
+                  "diameter": {"typeId": "Float64", "value": 0.75}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [35, 0, 2]},
+                  "maxPoint": {"typeId": "Point3d", "value": [35.06, 10, 2.06]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "flow": {
+                        "typeId": "autodesk.plumbing.parameter:flowRate-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 8.0},
+                          "unit": {"typeId": "String", "value": "gpm"}
+                        }
+                      },
+                      "length": {
+                        "typeId": "autodesk.revit.parameter:length-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 10.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "cable-tray-001",
+          "type": "autodesk.mep:cable-tray-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "s1r4q5p6-7o8p-9q0r-1s2t-3u4v5w6x7y8z-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "420001"},
+                  "categoryId": {"typeId": "String", "value": "OST_CableTray"}
+                }
+              },
+              "cableTrayProperties": {
+                "typeId": "autodesk.mep:cable-tray-properties-1.0.0",
+                "staticChildren": {
+                  "trayType": {"typeId": "String", "value": "Ladder"},
+                  "width": {"typeId": "Float64", "value": 12.0},
+                  "height": {"typeId": "Float64", "value": 4.0},
+                  "material": {"typeId": "String", "value": "Galvanized Steel"}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 8, 10]},
+                  "maxPoint": {"typeId": "Point3d", "value": [40, 9, 10.33]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "length": {
+                        "typeId": "autodesk.revit.parameter:length-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 40.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "column-001",
+          "type": "autodesk.revit:structural-column-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "t2s5r6q7-8p9q-0r1s-2t3u-4v5w6x7y8z9a-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "430001"},
+                  "categoryId": {"typeId": "String", "value": "OST_StructuralColumns"}
+                }
+              },
+              "columnProperties": {
+                "typeId": "autodesk.revit:structural-column-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "W-Wide Flange-Column"},
+                  "typeName": {"typeId": "String", "value": "W14X90"},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "structuralMaterial": {"typeId": "String", "value": "Steel"}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [19, 9, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [20.17, 10.17, 12]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "height": {
+                        "typeId": "autodesk.revit.parameter:height-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 12.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "railing-001",
+          "type": "autodesk.revit:railing-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "u3t6s7r8-9q0r-1s2t-3u4v-5w6x7y8z9a0b-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "440001"},
+                  "categoryId": {"typeId": "String", "value": "OST_Railings"}
+                }
+              },
+              "railingProperties": {
+                "typeId": "autodesk.revit:railing-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Railing"},
+                  "typeName": {"typeId": "String", "value": "Guardrail - Pipe"},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "height": {"typeId": "Float64", "value": 3.5}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [0, 0, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [20, 0.1, 3.5]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "length": {
+                        "typeId": "autodesk.revit.parameter:length-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 20.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "stairs-001",
+          "type": "autodesk.revit:stairs-2.0.0",
+          "space": {"id": "space-building-level-1"},
+          "attributes": {
+            "system": {
+              "uniqueId": "v4u7t8s9-0r1s-2t3u-4v5w-6x7y8z9a0b1c-001"
+            }
+          },
+          "components": {
+            "insertions": {
+              "metadata": {
+                "typeId": "autodesk.revit:element-metadata-1.0.0",
+                "staticChildren": {
+                  "elementId": {"typeId": "String", "value": "450001"},
+                  "categoryId": {"typeId": "String", "value": "OST_Stairs"}
+                }
+              },
+              "stairsProperties": {
+                "typeId": "autodesk.revit:stairs-properties-1.0.0",
+                "staticChildren": {
+                  "familyName": {"typeId": "String", "value": "Assembled Stair"},
+                  "typeName": {"typeId": "String", "value": "1/2\" Riser 1\" Tread"},
+                  "level": {"typeId": "String", "value": "Level 1"},
+                  "numberOfRisers": {"typeId": "Int32", "value": 14}
+                }
+              },
+              "geometry": {
+                "typeId": "autodesk.geometry:bounds-1.0.0",
+                "staticChildren": {
+                  "minPoint": {"typeId": "Point3d", "value": [25, 0, 0]},
+                  "maxPoint": {"typeId": "Point3d", "value": [30, 14, 9.33]}
+                }
+              },
+              "properties": {
+                "typeId": "autodesk.aec:component.propertyGroup-1.1.0",
+                "staticChildren": {
+                  "properties": {
+                    "typeId": "map<autodesk.parameter:parameter-2.0.0>",
+                    "insertions": {
+                      "width": {
+                        "typeId": "autodesk.revit.parameter:width-1.0.0",
+                        "staticChildren": {
+                          "value": {"typeId": "Float64", "value": 5.0},
+                          "unit": {"typeId": "String", "value": "ft"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "rel-door-in-wall-001",
+      "type": "autodesk.revit:hosted-1.0.0",
+      "from": {"assetId": "door-entry-001"},
+      "to": {"assetId": "wall-ext-north-001"},
+      "attributes": {
+        "application": {
+          "relationshipType": "hosted",
+          "insertionPoint": [10, 0, 0]
+        }
+      }
+    },
+    {
+      "id": "rel-window-in-wall-001",
+      "type": "autodesk.revit:hosted-1.0.0",
+      "from": {"assetId": "window-001"},
+      "to": {"assetId": "wall-ext-north-001"},
+      "attributes": {
+        "application": {
+          "relationshipType": "hosted",
+          "insertionPoint": [15, 0, 3]
+        }
+      }
+    },
+    {
+      "id": "rel-room-bounded-by-wall-001",
+      "type": "autodesk.revit:roomBounding-1.0.0",
+      "from": {"assetId": "room-101"},
+      "to": {"assetId": "wall-ext-north-001"},
+      "attributes": {
+        "application": {
+          "relationshipType": "roomBounding",
+          "boundaryType": "exterior"
+        }
+      }
+    },
+    {
+      "id": "rel-hvac-serves-room-001",
+      "type": "autodesk.mep:serves-1.0.0",
+      "from": {"assetId": "hvac-vav-101"},
+      "to": {"assetId": "room-101"},
+      "attributes": {
+        "application": {
+          "relationshipType": "serves",
+          "serviceType": "ventilation"
+        }
+      }
+    },
+    {
+      "id": "rel-duct-connects-hvac-001",
+      "type": "autodesk.mep:connects-1.0.0",
+      "from": {"assetId": "duct-001"},
+      "to": {"assetId": "hvac-vav-101"},
+      "attributes": {
+        "application": {
+          "relationshipType": "connects",
+          "connectionType": "supply"
+        }
+      }
+    }
+  ],
+  "batchProcessingInfo": {
+    "totalBatches": 400,
+    "entitiesPerBatch": 25,
+    "estimatedProcessingTime": "45 minutes",
+    "payloadSizeEstimate": "22MB total",
+    "compressionRatio": "3.5:1 (from 77MB P50 model)",
+    "notes": [
+      "This represents batch 1 of 400 total batches",
+      "Each batch contains 25 entities to stay within 250KB limit",
+      "Attributes reduced to single uniqueId for optimal compression",
+      "All metadata moved to components for better organization",
+      "Relationships defined separately for clarity"
+    ]
+  },
+  "scalingProjections": {
+    "p75Model": {
+      "totalEntities": 28571,
+      "totalBatches": 1143,
+      "estimatedSize": "51MB",
+      "processingTime": "2.5 hours"
+    },
+    "p95Model": {
+      "totalEntities": 114286,
+      "totalBatches": 4572,
+      "estimatedSize": "158MB",
+      "processingTime": "8 hours"
+    },
+    "p99Model": {
+      "totalEntities": 285714,
+      "totalBatches": 11429,
+      "estimatedSize": "340MB",
+      "processingTime": "18 hours"
+    }
+  }
+}
