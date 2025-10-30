@@ -5,13 +5,14 @@ A Python generator that creates realistic Autodesk/AutoCAD drawing payloads as M
 ## Features
 
 - **Collection Files**: Single JSON file per collection (model, assets, relationships)
+- **Optimized Storage**: Compound `_id` keys eliminate duplicate fields and reduce storage
 - **MongoDB Ready**: JSON arrays ready for `mongoimport --jsonArray` or MongoDB Compass
 - **Scalable**: Can generate 1M+ assets (limited only by disk space and memory)
 - **10,000 Assets**: Generates realistic AEC assets across 8 categories (configurable)
 - **2,000 Relationships**: Creates meaningful relationships between assets (configurable)
 - **Realistic Distribution**: Matches real-world Revit model patterns
 - **Proper Structure**: Follows Autodesk asset graph schema exactly
-- **Model Reference**: All documents include modelId for multi-tenant support
+- **Multi-tenant Support**: Compound keys include modelId for efficient multi-tenant queries
 - **Easy Import**: Direct import via mongoimport or MongoDB Compass GUI
 
 ## Asset Types Generated
@@ -161,21 +162,23 @@ aec_output/
 
 ## Asset Structure Example
 
-Each asset document includes:
+Each asset document uses a **compound `_id`** for optimization:
 
-- **modelId**: Reference to parent model (for multi-tenant support)
-- **id**: Unique identifier within the model (e.g., `wall-000001`)
+- **_id.modelId**: Reference to parent model (for multi-tenant support)
+- **_id.id**: Unique identifier within the model (e.g., `wall-000001`)
 - **type**: Autodesk type ID (e.g., `autodesk.revit:wall-2.0.0`)
 - **space**: Building space reference
 - **attributes**: System attributes including uniqueId
 - **components**: Metadata, properties, geometry, and custom properties
 
-### Wall Asset Document (assets/wall-000001.json)
+### Wall Asset Document
 
 ```json
 {
-  "modelId": "model-20251030-082305",
-  "id": "wall-000001",
+  "_id": {
+    "modelId": "model-20251030-082305",
+    "id": "wall-000001"
+  },
   "type": "autodesk.revit:wall-2.0.0",
   "space": {"id": "space-building-level-1"},
   "attributes": {
@@ -194,17 +197,22 @@ Each asset document includes:
 }
 ```
 
+**Benefits**: No duplicate `modelId` and `id` fields, natural primary key, ~10% storage reduction
+
 ## Relationship Structure Example
 
-### Relationship Document (relationships/rel-hosted-000001.json)
+Each relationship uses a **compound `_id`** with the relationship endpoints:
+
+### Relationship Document
 
 ```json
 {
-  "modelId": "model-20251030-082305",
-  "id": "rel-hosted-000001",
+  "_id": {
+    "modelId": "model-20251030-082305",
+    "fromAssetId": "door-000001",
+    "toAssetId": "wall-000001"
+  },
   "type": "autodesk.revit:hosted-1.0.0",
-  "from": {"assetId": "door-000001"},
-  "to": {"assetId": "wall-000001"},
   "attributes": {
     "application": {
       "relationshipType": "hosted",
@@ -213,6 +221,8 @@ Each asset document includes:
   }
 }
 ```
+
+**Benefits**: No duplicate fields, prevents duplicate relationships, efficient lookups
 
 ## MongoDB Collections
 

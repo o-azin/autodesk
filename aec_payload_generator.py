@@ -691,19 +691,64 @@ class AECPayloadGenerator:
         model_size = model_file.stat().st_size / 1024
         print(f"✓ Model saved: {model_file} ({model_size:.2f}KB)")
 
+        # Transform assets: move modelId and id to _id compound key
+        print(f"\nTransforming {len(assets)} assets...")
+        transformed_assets = []
+        for asset in assets:
+            transformed_asset = {
+                "_id": {
+                    "modelId": asset["modelId"],
+                    "id": asset["id"]
+                }
+            }
+            # Copy all fields except modelId and id
+            for key, value in asset.items():
+                if key not in ["modelId", "id"]:
+                    transformed_asset[key] = value
+            transformed_assets.append(transformed_asset)
+
         # Save all assets in a single file (JSON array)
-        print(f"\nSaving {len(assets)} assets to single file...")
+        print(f"Saving {len(transformed_assets)} assets to single file...")
         assets_file = output_path / "assets.json"
         with open(assets_file, 'w') as f:
-            json.dump(assets, f, indent=2)
+            json.dump(transformed_assets, f, indent=2)
         assets_size = assets_file.stat().st_size / (1024 * 1024)
         print(f"✓ Assets saved: {assets_file} ({assets_size:.2f}MB)")
 
+        # Transform relationships: move modelId, from.assetId, to.assetId to _id compound key
+        print(f"\nTransforming {len(relationships)} relationships...")
+        transformed_relationships = []
+        for rel in relationships:
+            transformed_rel = {
+                "_id": {
+                    "modelId": rel["modelId"],
+                    "fromAssetId": rel["from"]["assetId"],
+                    "toAssetId": rel["to"]["assetId"]
+                }
+            }
+            # Copy all fields except modelId, id, and update from/to to remove assetId
+            for key, value in rel.items():
+                if key in ["modelId", "id"]:  # Skip modelId and id (both moved to _id)
+                    continue
+                elif key == "from":
+                    # Keep from object but without assetId (if there are other fields)
+                    from_copy = {k: v for k, v in value.items() if k != "assetId"}
+                    if from_copy:  # Only include if there are other fields
+                        transformed_rel["from"] = from_copy
+                elif key == "to":
+                    # Keep to object but without assetId (if there are other fields)
+                    to_copy = {k: v for k, v in value.items() if k != "assetId"}
+                    if to_copy:  # Only include if there are other fields
+                        transformed_rel["to"] = to_copy
+                else:
+                    transformed_rel[key] = value
+            transformed_relationships.append(transformed_rel)
+
         # Save all relationships in a single file (JSON array)
-        print(f"\nSaving {len(relationships)} relationships to single file...")
+        print(f"Saving {len(transformed_relationships)} relationships to single file...")
         relationships_file = output_path / "relationships.json"
         with open(relationships_file, 'w') as f:
-            json.dump(relationships, f, indent=2)
+            json.dump(transformed_relationships, f, indent=2)
         relationships_size = relationships_file.stat().st_size / (1024 * 1024)
         print(f"✓ Relationships saved: {relationships_file} ({relationships_size:.2f}MB)")
 

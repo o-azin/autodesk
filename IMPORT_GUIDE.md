@@ -9,9 +9,42 @@ After running the generator, you'll have 3 files:
 ```
 aec_output/
 ├── model.json           # Single model document
-├── assets.json          # JSON array with all assets
-└── relationships.json   # JSON array with all relationships
+├── assets.json          # JSON array with all assets (optimized _id)
+└── relationships.json   # JSON array with all relationships (optimized _id)
 ```
+
+## 🎯 Optimized Document Structure
+
+### Assets
+Each asset uses a **compound `_id`** instead of MongoDB's default ObjectId:
+```json
+{
+  "_id": {
+    "modelId": "model-20251030-123456",
+    "id": "wall-000001"
+  },
+  "type": "autodesk.revit:wall-2.0.0",
+  "space": {...},
+  "attributes": {...},
+  "components": {...}
+}
+```
+**Benefits**: No duplicate `modelId` and `id` fields, natural primary key, better query performance
+
+### Relationships
+Each relationship uses a **compound `_id`** with the relationship endpoints:
+```json
+{
+  "_id": {
+    "modelId": "model-20251030-123456",
+    "fromAssetId": "door-000001",
+    "toAssetId": "wall-000001"
+  },
+  "type": "autodesk.revit:hosted-1.0.0",
+  "attributes": {...}
+}
+```
+**Benefits**: No duplicate fields, prevents duplicate relationships, efficient lookups
 
 ## 🚀 Import Methods
 
@@ -176,9 +209,19 @@ db.relationships.find({
 ```javascript
 db.relationships.find({
   $or: [
-    { "from.assetId": "wall-000001" },
-    { "to.assetId": "wall-000001" }
+    { "_id.fromAssetId": "wall-000001" },
+    { "_id.toAssetId": "wall-000001" }
   ]
+})
+```
+
+### Find a specific asset by modelId and id
+```javascript
+db.assets.findOne({
+  "_id": {
+    "modelId": "model-20251030-123456",
+    "id": "wall-000001"
+  }
 })
 ```
 
@@ -194,22 +237,27 @@ db.models.findOne({}, { modelStatistics: 1, entityDistribution: 1 })
 1. **Create Indexes** for better query performance:
 ```javascript
 // Asset indexes
-db.assets.createIndex({ modelId: 1 })
+db.assets.createIndex({ "_id.modelId": 1 })
 db.assets.createIndex({ type: 1 })
-db.assets.createIndex({ "modelId": 1, "id": 1 }, { unique: true })
+db.assets.createIndex({ "_id.modelId": 1, type: 1 })
 
 // Relationship indexes
-db.relationships.createIndex({ modelId: 1 })
+db.relationships.createIndex({ "_id.modelId": 1 })
 db.relationships.createIndex({ type: 1 })
-db.relationships.createIndex({ "from.assetId": 1 })
-db.relationships.createIndex({ "to.assetId": 1 })
-db.relationships.createIndex({ "modelId": 1, "id": 1 }, { unique: true })
+db.relationships.createIndex({ "_id.fromAssetId": 1 })
+db.relationships.createIndex({ "_id.toAssetId": 1 })
+db.relationships.createIndex({ "_id.modelId": 1, type: 1 })
 ```
 
-2. **Multi-tenant Setup**: Use `modelId` to filter queries:
+**Note**: The compound `_id` is automatically indexed, so you don't need to create a separate unique index!
+
+2. **Multi-tenant Setup**: Use `_id.modelId` to filter queries:
 ```javascript
 // Query assets for specific model
-db.assets.find({ modelId: "model-20251030-123456" })
+db.assets.find({ "_id.modelId": "model-20251030-123456" })
+
+// Query relationships for specific model
+db.relationships.find({ "_id.modelId": "model-20251030-123456" })
 ```
 
 3. **Backup Before Import**: Always backup your database before importing large datasets
