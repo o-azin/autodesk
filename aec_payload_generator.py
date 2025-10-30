@@ -707,13 +707,24 @@ class AECPayloadGenerator:
                     transformed_asset[key] = value
             transformed_assets.append(transformed_asset)
 
-        # Save all assets in a single file (JSON array)
-        print(f"Saving {len(transformed_assets)} assets to single file...")
-        assets_file = output_path / "assets.json"
-        with open(assets_file, 'w') as f:
+        # Save assets in both JSON and JSONL formats
+        print(f"Saving {len(transformed_assets)} assets...")
+
+        # JSON array format (for reference/inspection)
+        assets_json_file = output_path / "assets.json"
+        with open(assets_json_file, 'w') as f:
             json.dump(transformed_assets, f, indent=2)
-        assets_size = assets_file.stat().st_size / (1024 * 1024)
-        print(f"✓ Assets saved: {assets_file} ({assets_size:.2f}MB)")
+        assets_json_size = assets_json_file.stat().st_size / (1024 * 1024)
+
+        # JSONL format (for mongoimport)
+        assets_jsonl_file = output_path / "assets.jsonl"
+        with open(assets_jsonl_file, 'w') as f:
+            for asset in transformed_assets:
+                f.write(json.dumps(asset) + '\n')
+        assets_jsonl_size = assets_jsonl_file.stat().st_size / (1024 * 1024)
+
+        print(f"✓ Assets saved: {assets_json_file} ({assets_json_size:.2f}MB)")
+        print(f"✓ Assets saved: {assets_jsonl_file} ({assets_jsonl_size:.2f}MB, for mongoimport)")
 
         # Transform relationships: move modelId, from.assetId, to.assetId to _id compound key
         print(f"\nTransforming {len(relationships)} relationships...")
@@ -744,13 +755,24 @@ class AECPayloadGenerator:
                     transformed_rel[key] = value
             transformed_relationships.append(transformed_rel)
 
-        # Save all relationships in a single file (JSON array)
-        print(f"Saving {len(transformed_relationships)} relationships to single file...")
-        relationships_file = output_path / "relationships.json"
-        with open(relationships_file, 'w') as f:
+        # Save relationships in both JSON and JSONL formats
+        print(f"Saving {len(transformed_relationships)} relationships...")
+
+        # JSON array format (for reference/inspection)
+        relationships_json_file = output_path / "relationships.json"
+        with open(relationships_json_file, 'w') as f:
             json.dump(transformed_relationships, f, indent=2)
-        relationships_size = relationships_file.stat().st_size / (1024 * 1024)
-        print(f"✓ Relationships saved: {relationships_file} ({relationships_size:.2f}MB)")
+        relationships_json_size = relationships_json_file.stat().st_size / (1024 * 1024)
+
+        # JSONL format (for mongoimport)
+        relationships_jsonl_file = output_path / "relationships.jsonl"
+        with open(relationships_jsonl_file, 'w') as f:
+            for rel in transformed_relationships:
+                f.write(json.dumps(rel) + '\n')
+        relationships_jsonl_size = relationships_jsonl_file.stat().st_size / (1024 * 1024)
+
+        print(f"✓ Relationships saved: {relationships_json_file} ({relationships_json_size:.2f}MB)")
+        print(f"✓ Relationships saved: {relationships_jsonl_file} ({relationships_jsonl_size:.2f}MB, for mongoimport)")
 
         # Create summary
         print("\n" + "=" * 60)
@@ -758,15 +780,18 @@ class AECPayloadGenerator:
         print(f"  Output directory: {output_path}")
         print(f"\n  Files created:")
         print(f"    - model.json ({model_size:.2f}KB)")
-        print(f"    - assets.json ({assets_size:.2f}MB, {len(assets)} documents)")
-        print(f"    - relationships.json ({relationships_size:.2f}MB, {len(relationships)} documents)")
+        print(f"    - assets.json ({assets_json_size:.2f}MB, {len(assets)} documents)")
+        print(f"    - assets.jsonl ({assets_jsonl_size:.2f}MB, for mongoimport)")
+        print(f"    - relationships.json ({relationships_json_size:.2f}MB, {len(relationships)} documents)")
+        print(f"    - relationships.jsonl ({relationships_jsonl_size:.2f}MB, for mongoimport)")
         print(f"\n  Entity Distribution:")
         for entity_type, count in distribution.items():
             print(f"    {entity_type}: {count}")
         print("\n  Import to MongoDB:")
+        print(f"    cd {output_path}")
         print(f"    mongoimport --db=<db_name> --collection=models --file=model.json")
-        print(f"    mongoimport --db=<db_name> --collection=assets --file=assets.json --jsonArray")
-        print(f"    mongoimport --db=<db_name> --collection=relationships --file=relationships.json --jsonArray")
+        print(f"    mongoimport --db=<db_name> --collection=assets --file=assets.jsonl")
+        print(f"    mongoimport --db=<db_name> --collection=relationships --file=relationships.jsonl")
         print("=" * 60)
 
         return model_doc, assets, relationships

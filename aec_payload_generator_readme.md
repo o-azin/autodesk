@@ -58,10 +58,12 @@ python3 --version
 python3 aec_payload_generator.py
 ```
 
-This generates an `aec_output/` directory with 3 files:
+This generates an `aec_output/` directory with 5 files:
 - `model.json` - Single model document
-- `assets.json` - JSON array with 10,000 assets
-- `relationships.json` - JSON array with 2,000 relationships
+- `assets.json` - JSON array with 10,000 assets (for inspection)
+- `assets.jsonl` - JSONL format for mongoimport
+- `relationships.json` - JSON array with 2,000 relationships (for inspection)
+- `relationships.jsonl` - JSONL format for mongoimport
 
 ### Custom Configuration
 
@@ -98,12 +100,14 @@ cd aec_output
 # Import model document
 mongoimport --db=aec_models --collection=models --file=model.json
 
-# Import assets (JSON array)
-mongoimport --db=aec_models --collection=assets --file=assets.json --jsonArray
+# Import assets (JSONL format - one document per line)
+mongoimport --db=aec_models --collection=assets --file=assets.jsonl
 
-# Import relationships (JSON array)
-mongoimport --db=aec_models --collection=relationships --file=relationships.json --jsonArray
+# Import relationships (JSONL format - one document per line)
+mongoimport --db=aec_models --collection=relationships --file=relationships.jsonl
 ```
+
+**Note**: Use `.jsonl` files for mongoimport (JSONL format, one document per line). No `--jsonArray` flag needed!
 
 #### Option 2: Using MongoDB Compass (GUI)
 
@@ -113,6 +117,7 @@ mongoimport --db=aec_models --collection=relationships --file=relationships.json
 4. For each collection:
    - Click "ADD DATA" → "Import JSON or CSV file"
    - Select the corresponding file (`model.json`, `assets.json`, `relationships.json`)
+   - MongoDB Compass can handle both JSON arrays and JSONL formats
    - Click "Import"
 
 ## Output Structure
@@ -122,9 +127,13 @@ mongoimport --db=aec_models --collection=relationships --file=relationships.json
 ```
 aec_output/
 ├── model.json                    # Single model document
-├── assets.json                   # JSON array with all assets
-└── relationships.json            # JSON array with all relationships
+├── assets.json                   # JSON array with all assets (for inspection)
+├── assets.jsonl                  # JSONL format for mongoimport
+├── relationships.json            # JSON array with all relationships (for inspection)
+└── relationships.jsonl           # JSONL format for mongoimport
 ```
+
+**Note**: `.jsonl` files are optimized for `mongoimport` (one document per line). `.json` files are formatted for easy inspection.
 
 ### Model Document (model.json)
 

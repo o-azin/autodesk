@@ -4,14 +4,18 @@ This guide shows you how to import the generated AEC payload files into MongoDB.
 
 ## 📁 Generated Files
 
-After running the generator, you'll have 3 files:
+After running the generator, you'll have 5 files:
 
 ```
 aec_output/
 ├── model.json           # Single model document
-├── assets.json          # JSON array with all assets (optimized _id)
-└── relationships.json   # JSON array with all relationships (optimized _id)
+├── assets.json          # JSON array with all assets (for inspection)
+├── assets.jsonl         # JSONL format for mongoimport (optimized _id)
+├── relationships.json   # JSON array with all relationships (for inspection)
+└── relationships.jsonl  # JSONL format for mongoimport (optimized _id)
 ```
+
+**Note**: The `.json` files are formatted JSON arrays for easy inspection. The `.jsonl` files are JSONL format (one document per line) optimized for `mongoimport`.
 
 ## 🎯 Optimized Document Structure
 
@@ -65,12 +69,14 @@ cd aec_output
 # Import model document
 mongoimport --db=aec_models --collection=models --file=model.json
 
-# Import assets (note the --jsonArray flag!)
-mongoimport --db=aec_models --collection=assets --file=assets.json --jsonArray
+# Import assets (JSONL format - one document per line)
+mongoimport --db=aec_models --collection=assets --file=assets.jsonl
 
-# Import relationships (note the --jsonArray flag!)
-mongoimport --db=aec_models --collection=relationships --file=relationships.json --jsonArray
+# Import relationships (JSONL format - one document per line)
+mongoimport --db=aec_models --collection=relationships --file=relationships.jsonl
 ```
+
+**Why JSONL?** MongoDB's `mongoimport` handles JSONL format (one JSON document per line) better than JSON arrays, especially with compound `_id` fields. No `--jsonArray` flag needed!
 
 #### With Custom MongoDB URI
 
@@ -84,20 +90,20 @@ mongoimport --uri="mongodb://username:password@host:port" \
 mongoimport --uri="mongodb://username:password@host:port" \
   --db=aec_models \
   --collection=assets \
-  --file=assets.json \
-  --jsonArray
+  --file=assets.jsonl
 
 mongoimport --uri="mongodb://username:password@host:port" \
   --db=aec_models \
   --collection=relationships \
-  --file=relationships.json \
-  --jsonArray
+  --file=relationships.jsonl
 ```
 
 #### Important Notes
-- **Always use `--jsonArray` flag** for `assets.json` and `relationships.json`
+- **Use `.jsonl` files** for `assets` and `relationships` (JSONL format, one document per line)
+- **No `--jsonArray` flag needed** for JSONL files
 - **Do NOT use `--jsonArray`** for `model.json` (it's a single document)
 - The collections will be created automatically if they don't exist
+- The `.json` files are provided for inspection/debugging only
 
 ---
 
@@ -129,7 +135,7 @@ This method is great for beginners or visual learners.
    - Click "Create Collection" → Name it `assets`
    - Select the `assets` collection
    - Click "ADD DATA" → "Import JSON or CSV file"
-   - Select `assets.json`
+   - Select `assets.json` (MongoDB Compass can handle JSON arrays)
    - Click "Import"
    - You should see N documents imported (e.g., 10,000)
 
@@ -137,9 +143,11 @@ This method is great for beginners or visual learners.
    - Click "Create Collection" → Name it `relationships`
    - Select the `relationships` collection
    - Click "ADD DATA" → "Import JSON or CSV file"
-   - Select `relationships.json`
+   - Select `relationships.json` (MongoDB Compass can handle JSON arrays)
    - Click "Import"
    - You should see M documents imported (e.g., 2,000)
+
+**Note**: MongoDB Compass can import both `.json` (array) and `.jsonl` formats. Use whichever you prefer!
 
 ---
 
@@ -169,8 +177,8 @@ db.relationships.findOne()
 
 // Check modelId consistency
 db.models.distinct("modelId")
-db.assets.distinct("modelId")
-db.relationships.distinct("modelId")
+db.assets.distinct("_id.modelId")
+db.relationships.distinct("_id.modelId")
 // All three should return the same modelId
 ```
 
