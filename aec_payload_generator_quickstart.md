@@ -2,21 +2,30 @@
 
 ## 🚀 Get Started in 30 Seconds
 
-### 1. Generate Your First Payload
+### 1. Generate Your First Model
 
 ```bash
 python3 aec_payload_generator.py
 ```
 
-**Output**: `aec_generated_payload.json` with 10,000 assets and 2,000 relationships
+**Output**: `aec_output/` directory with 3 files:
+- `model.json` - Single model document
+- `assets.json` - JSON array with 10,000 assets
+- `relationships.json` - JSON array with 2,000 relationships
 
-### 2. Validate the Output
+### 2. Verify the Output
 
 ```bash
-python3 validate_payload.py aec_generated_payload.json
-```
+# Check files created
+ls -lh aec_output/
 
-**Result**: Detailed validation report showing structure, statistics, and distribution
+# View model metadata
+cat aec_output/model.json
+
+# Count assets and relationships
+python3 -c "import json; print(f'Assets: {len(json.load(open(\"aec_output/assets.json\")))}')"
+python3 -c "import json; print(f'Relationships: {len(json.load(open(\"aec_output/relationships.json\")))}')"
+```
 
 ---
 
@@ -24,22 +33,32 @@ python3 validate_payload.py aec_generated_payload.json
 
 ### Small Test Dataset (100 assets)
 ```bash
-python3 aec_payload_generator.py --assets 100 --relationships 20 --output small_test.json
+python3 aec_payload_generator.py --assets 100 --relationships 20 --output-dir small_test
 ```
 
 ### Medium Dataset (5K assets)
 ```bash
-python3 aec_payload_generator.py --assets 5000 --relationships 1000 --output medium_model.json
+python3 aec_payload_generator.py --assets 5000 --relationships 1000 --output-dir medium_model
 ```
 
-### Large Dataset (20K assets)
+### Large Dataset (100K assets)
 ```bash
-python3 aec_payload_generator.py --assets 20000 --relationships 5000 --output large_model.json
+python3 aec_payload_generator.py --assets 100000 --relationships 20000 --output-dir large_model
+```
+
+### Very Large Dataset (1M assets)
+```bash
+python3 aec_payload_generator.py --assets 1000000 --relationships 200000 --output-dir million_assets
 ```
 
 ### Reproducible Generation (with seed)
 ```bash
 python3 aec_payload_generator.py --seed 42
+```
+
+### Custom Model ID
+```bash
+python3 aec_payload_generator.py --model-id "building-abc-123" --output-dir building_abc
 ```
 
 ---
@@ -66,20 +85,54 @@ python3 aec_payload_generator.py --seed 42
 
 ## 🔍 Inspect the Output
 
-### View Statistics
+### View Model Metadata
 ```bash
-python3 -c "import json; d=json.load(open('aec_generated_payload.json')); print(json.dumps(d['modelStatistics'], indent=2))"
+cat aec_output/model.json | python3 -m json.tool
 ```
 
-### View Entity Distribution
+### View First Asset
 ```bash
-python3 -c "import json; d=json.load(open('aec_generated_payload.json')); print(json.dumps(d['entityDistribution'], indent=2))"
+python3 -c "import json; assets = json.load(open('aec_output/assets.json')); print(json.dumps(assets[0], indent=2))" | head -40
 ```
 
-### Count Relationships by Type
+### View First Relationship
 ```bash
-python3 -c "import json; d=json.load(open('aec_generated_payload.json')); rels=d['relationships']; types={}; [types.update({r['attributes']['application']['relationshipType']: types.get(r['attributes']['application']['relationshipType'], 0)+1}) for r in rels]; print(json.dumps(types, indent=2))"
+python3 -c "import json; rels = json.load(open('aec_output/relationships.json')); print(json.dumps(rels[0], indent=2))"
 ```
+
+### Check File Sizes
+```bash
+ls -lh aec_output/
+du -sh aec_output/
+```
+
+---
+
+## 📦 Import to MongoDB
+
+### Option 1: Using mongoimport (Command Line)
+
+```bash
+cd aec_output
+
+# Import model
+mongoimport --db=aec_models --collection=models --file=model.json
+
+# Import assets (note the --jsonArray flag)
+mongoimport --db=aec_models --collection=assets --file=assets.json --jsonArray
+
+# Import relationships (note the --jsonArray flag)
+mongoimport --db=aec_models --collection=relationships --file=relationships.json --jsonArray
+```
+
+### Option 2: Using MongoDB Compass (GUI)
+
+1. Open MongoDB Compass and connect to your database
+2. Create three collections: `models`, `assets`, `relationships`
+3. For each collection:
+   - Click "ADD DATA" → "Import JSON or CSV file"
+   - Select the file (`model.json`, `assets.json`, or `relationships.json`)
+   - Click "Import"
 
 ---
 
@@ -87,17 +140,13 @@ python3 -c "import json; d=json.load(open('aec_generated_payload.json')); rels=d
 
 After generation, verify:
 
-- [ ] File created successfully
-- [ ] File size is reasonable (~2-3KB per asset)
-- [ ] Total assets matches requested count
-- [ ] All 8 asset types present
-- [ ] Relationships reference valid asset IDs
-- [ ] JSON is valid and well-formed
-
-Run validation:
-```bash
-python3 validate_payload.py aec_generated_payload.json
-```
+- [ ] Directory created successfully
+- [ ] `model.json` exists and is valid JSON
+- [ ] `assets.json` exists and contains expected number of documents
+- [ ] `relationships.json` exists and contains expected number of documents
+- [ ] All files are valid JSON
+- [ ] All relationships reference valid asset IDs
+- [ ] Total size is reasonable (~2-3KB per asset)
 
 ---
 
@@ -105,27 +154,35 @@ python3 validate_payload.py aec_generated_payload.json
 
 ```bash
 # 1. Generate a test dataset
-python3 aec_payload_generator.py --assets 1000 --relationships 200 --output test.json --seed 123
+python3 aec_payload_generator.py --assets 1000 --relationships 200 --output-dir test_model --seed 123
 
-# 2. Validate it
-python3 validate_payload.py test.json
+# 2. Verify it
+ls -lh test_model/
+cat test_model/model.json
 
-# 3. Generate production dataset
-python3 aec_payload_generator.py --seed 456
+# 3. Import to MongoDB
+cd test_model
+mongoimport --db=test_db --collection=models --file=model.json
+mongoimport --db=test_db --collection=assets --file=assets.json --jsonArray
+mongoimport --db=test_db --collection=relationships --file=relationships.json --jsonArray
 
-# 4. Validate production dataset
-python3 validate_payload.py aec_generated_payload.json
+# 4. Generate production dataset
+python3 aec_payload_generator.py --assets 100000 --relationships 20000 --output-dir production --seed 456
 
-# 5. Compare test vs production
-python3 validate_payload.py test.json --compare aec_generated_payload.json
+# 5. Import to production MongoDB
+cd production
+mongoimport --uri="mongodb://prod-server:27017" --db=production_db --collection=models --file=model.json
+mongoimport --uri="mongodb://prod-server:27017" --db=production_db --collection=assets --file=assets.json --jsonArray
+mongoimport --uri="mongodb://prod-server:27017" --db=production_db --collection=relationships --file=relationships.json --jsonArray
 ```
 
 ---
 
 ## 📖 Need More Help?
 
-- **Full Documentation**: See `AEC_GENERATOR_README.md`
-- **Technical Details**: See `GENERATOR_SUMMARY.md`
+- **Full Documentation**: See `aec_payload_generator_readme.md`
+- **Technical Details**: See `aec_payload_generator_summary.md`
+- **Architecture Overview**: See `aec_individual_docs_summary.md`
 - **Sample Structure**: See `AEC-Sample-Model-10K-Entities-Payload.json`
 
 ---
@@ -135,34 +192,51 @@ python3 validate_payload.py test.json --compare aec_generated_payload.json
 ### "No module named 'json'"
 - **Solution**: Use Python 3.7+ (`python3 --version`)
 
-### File too large
-- **Solution**: Reduce asset count (`--assets 1000`)
-
 ### Out of memory
-- **Solution**: Generate in smaller batches or increase system memory
+- **Solution**: Generate in smaller batches (e.g., `--assets 10000` instead of 1M)
 
-### Invalid JSON
-- **Solution**: Check file wasn't truncated, re-generate with `--seed` for consistency
+### Directory already exists
+- **Solution**: Use a different `--output-dir` or remove the existing directory
+
+### MongoDB import fails
+- **Solution**: Ensure MongoDB is running and connection string is correct
+
+### "mongoimport: command not found"
+- **Solution**: Install MongoDB tools or use Python import script instead
 
 ---
 
 ## 💡 Pro Tips
 
 1. **Use seeds for reproducibility**: `--seed 42` generates the same data every time
-2. **Start small**: Test with 100 assets before generating 10K+
-3. **Validate early**: Run validation on small datasets first
-4. **Monitor file size**: ~2-3KB per asset is normal
+2. **Start small**: Test with 100 assets before generating 100K+
+3. **Use custom model IDs**: `--model-id "project-name"` for better organization
+4. **Monitor disk space**: ~2-3KB per asset, so 100K assets = ~250MB
 5. **Check relationships**: Ensure relationship count is reasonable (10-20% of assets)
+6. **Use --jsonArray flag**: Required when importing JSON arrays with mongoimport
+7. **MongoDB Compass**: Great for visual inspection and one-click imports
+8. **Multi-tenant**: Use different model IDs to store multiple models in one database
 
 ---
 
 ## 🎉 You're Ready!
 
-Generate your first payload now:
+Generate your first model now:
 
 ```bash
 python3 aec_payload_generator.py
 ```
+
+Then import to MongoDB:
+
+```bash
+cd aec_output
+mongoimport --db=aec_models --collection=models --file=model.json
+mongoimport --db=aec_models --collection=assets --file=assets.json --jsonArray
+mongoimport --db=aec_models --collection=relationships --file=relationships.json --jsonArray
+```
+
+Or use MongoDB Compass for a GUI experience!
 
 Happy generating! 🚀
 

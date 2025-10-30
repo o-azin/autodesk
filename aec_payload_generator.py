@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 """
 AEC Payload Generator
-Generates realistic Autodesk/AutoCAD drawing payloads with 10K assets and 2K relationships.
-Use like this: 
-python3 aec_payload_generator.py --assets 5000 --relationships 1000 --output custom.json
+Generates realistic Autodesk/AutoCAD drawing payloads with individual documents for MongoDB.
+Each asset and relationship is stored as a separate document with a reference to the parent model.
+
+Use like this:
+python3 aec_payload_generator.py --assets 5000 --relationships 1000 --output-dir output_folder
 """
 
 import json
 import random
 import uuid
+import os
 from typing import Dict, List, Any
 from datetime import datetime
+from pathlib import Path
 
 
 class AECPayloadGenerator:
@@ -104,11 +108,12 @@ class AECPayloadGenerator:
     LEVELS = ['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5']
     PHASES = ['New Construction', 'Existing', 'Demolition', 'Future']
     
-    def __init__(self, total_assets: int = 10000, total_relationships: int = 2000):
+    def __init__(self, total_assets: int = 10000, total_relationships: int = 2000, model_id: str = None):
         self.total_assets = total_assets
         self.total_relationships = total_relationships
         self.generated_assets = []
         self.asset_ids_by_type = {key: [] for key in self.ASSET_TYPES.keys()}
+        self.model_id = model_id or f"model-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
         
     def generate_uuid(self, prefix: str, index: int) -> str:
         """Generate a deterministic UUID-like string."""
@@ -137,18 +142,19 @@ class AECPayloadGenerator:
         family, types = random.choice(config['families'])
         type_name = random.choice(types)
         level = random.choice(self.LEVELS)
-        
+
         # Generate geometry
         x_start = random.uniform(0, 90)
         y_start = random.uniform(0, 90)
         length = random.uniform(10, 30)
         height = random.uniform(9, 14)
         thickness = 0.5 if 'Interior' in family else 0.75
-        
+
         area = length * height
         volume = area * thickness
-        
+
         asset = {
+            "modelId": self.model_id,
             "id": asset_id,
             "type": config['type'],
             "space": {"id": f"space-building-{level.lower().replace(' ', '-')}"},
@@ -219,12 +225,13 @@ class AECPayloadGenerator:
         family, types = random.choice(config['families'])
         type_name = random.choice(types)
         level = random.choice(self.LEVELS)
-        
+
         # Parse dimensions from type name
         width = float(type_name.split('"')[0]) / 12  # Convert inches to feet
         height = 7.0
-        
+
         asset = {
+            "modelId": self.model_id,
             "id": asset_id,
             "type": config['type'],
             "space": {"id": f"space-building-{level.lower().replace(' ', '-')}"},
@@ -301,6 +308,7 @@ class AECPayloadGenerator:
         height = 6.0
 
         asset = {
+            "modelId": self.model_id,
             "id": asset_id,
             "type": config['type'],
             "space": {"id": f"space-building-{level.lower().replace(' ', '-')}"},
@@ -380,6 +388,7 @@ class AECPayloadGenerator:
         volume = area * height
 
         asset = {
+            "modelId": self.model_id,
             "id": asset_id,
             "type": config['type'],
             "space": {"id": f"space-building-{level.lower().replace(' ', '-')}"},
@@ -460,6 +469,7 @@ class AECPayloadGenerator:
             property_key = 'structuralProperties'
 
         asset = {
+            "modelId": self.model_id,
             "id": asset_id,
             "type": config['type'],
             "space": {"id": f"space-building-{level.lower().replace(' ', '-')}"},
@@ -599,6 +609,7 @@ class AECPayloadGenerator:
             to_asset = random.choice(self.asset_ids_by_type[to_type])
 
             relationship = {
+                "modelId": self.model_id,
                 "id": f"rel-{config['type']}-{i:06d}",
                 "type": config['rel_type'],
                 "from": {"assetId": from_asset},
@@ -637,11 +648,15 @@ class AECPayloadGenerator:
             "entitiesPerBatch": 25
         }, distribution
 
-    def generate_payload(self, output_file: str = "aec_generated_payload.json"):
-        """Generate complete payload and save to file."""
+    def generate_payload(self, output_dir: str = "aec_output"):
+        """Generate collection files for model, assets, and relationships."""
         print("=" * 60)
-        print("AEC Payload Generator")
+        print("AEC Payload Generator - Collection Files")
         print("=" * 60)
+
+        # Create output directory
+        output_path = Path(output_dir)
+        output_path.mkdir(parents=True, exist_ok=True)
 
         # Generate assets
         assets = self.generate_assets()
@@ -652,67 +667,82 @@ class AECPayloadGenerator:
         # Calculate statistics
         stats, distribution = self.calculate_statistics(assets)
 
-        # Build payload
-        payload = {
+        # Create model document
+        model_doc = {
+            "modelId": self.model_id,
             "batchId": f"batch-aec-model-{self.total_assets}-entities",
             "description": f"AEC Model with {self.total_assets} entities - Generated payload",
             "modelStatistics": stats,
             "entityDistribution": distribution,
-            "commands": [
-                {
-                    "commandType": "CreateAssets",
-                    "batchNumber": 1,
-                    "assets": assets
-                }
-            ],
-            "relationships": relationships,
-            "batchProcessingInfo": {
-                "totalBatches": stats['batchCount'],
-                "entitiesPerBatch": 25,
-                "estimatedProcessingTime": f"{stats['batchCount'] * 0.1:.0f} minutes",
-                "payloadSizeEstimate": stats['modelSize'],
-                "notes": [
-                    f"Generated {len(assets)} assets across {len(self.ASSET_TYPES)} categories",
-                    f"Generated {len(relationships)} relationships",
-                    "Each batch contains 25 entities to stay within size limits",
-                    "Realistic property distributions based on Revit models"
-                ]
-            },
             "generationInfo": {
                 "generatedAt": datetime.now().isoformat(),
-                "generator": "AECPayloadGenerator v1.0",
+                "generator": "AECPayloadGenerator v2.0",
                 "totalAssets": len(assets),
-                "totalRelationships": len(relationships)
+                "totalRelationships": len(relationships),
+                "outputFormat": "collection-files"
             }
         }
 
-        # Save to file
-        print(f"\nSaving payload to {output_file}...")
-        with open(output_file, 'w') as f:
-            json.dump(payload, f, indent=2)
+        # Save model document
+        print(f"\nSaving model document...")
+        model_file = output_path / "model.json"
+        with open(model_file, 'w') as f:
+            json.dump(model_doc, f, indent=2)
+        model_size = model_file.stat().st_size / 1024
+        print(f"✓ Model saved: {model_file} ({model_size:.2f}KB)")
 
-        file_size = len(json.dumps(payload).encode('utf-8'))
-        print(f"✓ Payload saved successfully!")
-        print(f"  File size: {file_size / (1024*1024):.2f}MB")
-        print(f"  Assets: {len(assets)}")
-        print(f"  Relationships: {len(relationships)}")
-        print("\nEntity Distribution:")
+        # Save all assets in a single file (JSON array)
+        print(f"\nSaving {len(assets)} assets to single file...")
+        assets_file = output_path / "assets.json"
+        with open(assets_file, 'w') as f:
+            json.dump(assets, f, indent=2)
+        assets_size = assets_file.stat().st_size / (1024 * 1024)
+        print(f"✓ Assets saved: {assets_file} ({assets_size:.2f}MB)")
+
+        # Save all relationships in a single file (JSON array)
+        print(f"\nSaving {len(relationships)} relationships to single file...")
+        relationships_file = output_path / "relationships.json"
+        with open(relationships_file, 'w') as f:
+            json.dump(relationships, f, indent=2)
+        relationships_size = relationships_file.stat().st_size / (1024 * 1024)
+        print(f"✓ Relationships saved: {relationships_file} ({relationships_size:.2f}MB)")
+
+        # Create summary
+        print("\n" + "=" * 60)
+        print("✓ Generation complete!")
+        print(f"  Output directory: {output_path}")
+        print(f"\n  Files created:")
+        print(f"    - model.json ({model_size:.2f}KB)")
+        print(f"    - assets.json ({assets_size:.2f}MB, {len(assets)} documents)")
+        print(f"    - relationships.json ({relationships_size:.2f}MB, {len(relationships)} documents)")
+        print(f"\n  Entity Distribution:")
         for entity_type, count in distribution.items():
-            print(f"  {entity_type}: {count}")
+            print(f"    {entity_type}: {count}")
+        print("\n  Import to MongoDB:")
+        print(f"    mongoimport --db=<db_name> --collection=models --file=model.json")
+        print(f"    mongoimport --db=<db_name> --collection=assets --file=assets.json --jsonArray")
+        print(f"    mongoimport --db=<db_name> --collection=relationships --file=relationships.json --jsonArray")
         print("=" * 60)
+
+        return model_doc, assets, relationships
 
 
 def main():
     """Main entry point."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Generate AEC model payloads')
+    parser = argparse.ArgumentParser(
+        description='Generate AEC model payloads as individual MongoDB documents',
+        epilog='Example: python3 aec_payload_generator.py --assets 5000 --relationships 1000 --output-dir my_model'
+    )
     parser.add_argument('--assets', type=int, default=10000,
                        help='Number of assets to generate (default: 10000)')
     parser.add_argument('--relationships', type=int, default=2000,
                        help='Number of relationships to generate (default: 2000)')
-    parser.add_argument('--output', type=str, default='aec_generated_payload.json',
-                       help='Output file path (default: aec_generated_payload.json)')
+    parser.add_argument('--output-dir', type=str, default='aec_output',
+                       help='Output directory path (default: aec_output)')
+    parser.add_argument('--model-id', type=str, default=None,
+                       help='Model ID (default: auto-generated timestamp)')
     parser.add_argument('--seed', type=int, default=None,
                        help='Random seed for reproducibility')
 
@@ -724,10 +754,11 @@ def main():
 
     generator = AECPayloadGenerator(
         total_assets=args.assets,
-        total_relationships=args.relationships
+        total_relationships=args.relationships,
+        model_id=args.model_id
     )
 
-    generator.generate_payload(output_file=args.output)
+    generator.generate_payload(output_dir=args.output_dir)
 
 
 if __name__ == '__main__':
