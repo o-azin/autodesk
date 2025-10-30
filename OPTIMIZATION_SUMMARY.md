@@ -76,6 +76,7 @@ The generator now uses **compound `_id` keys** instead of MongoDB's default Obje
 {
   "_id": {
     "modelId": "model-20251030-123456",
+    "id": "rel-hosted-000001",
     "fromAssetId": "door-000001",
     "toAssetId": "wall-000001"
   },
@@ -85,12 +86,12 @@ The generator now uses **compound `_id` keys** instead of MongoDB's default Obje
 ```
 
 **Benefits:**
-- ✅ Natural composite key using relationship endpoints
+- ✅ Natural composite key using relationship id and endpoints
 - ✅ No duplicate fields - all identifiers in `_id`
-- ✅ Automatic prevention of duplicate relationships
+- ✅ Guaranteed uniqueness (includes relationship id)
 - ✅ ~15-20% storage reduction per document
 - ✅ Efficient lookups by `fromAssetId` or `toAssetId`
-- ✅ No need for separate relationship `id` field
+- ✅ Supports multiple relationships between same asset pair
 
 ---
 

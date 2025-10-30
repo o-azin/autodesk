@@ -726,13 +726,14 @@ class AECPayloadGenerator:
         print(f"✓ Assets saved: {assets_json_file} ({assets_json_size:.2f}MB)")
         print(f"✓ Assets saved: {assets_jsonl_file} ({assets_jsonl_size:.2f}MB, for mongoimport)")
 
-        # Transform relationships: move modelId, from.assetId, to.assetId to _id compound key
+        # Transform relationships: move modelId, id, from.assetId, to.assetId to _id compound key
         print(f"\nTransforming {len(relationships)} relationships...")
         transformed_relationships = []
         for rel in relationships:
             transformed_rel = {
                 "_id": {
                     "modelId": rel["modelId"],
+                    "id": rel["id"],
                     "fromAssetId": rel["from"]["assetId"],
                     "toAssetId": rel["to"]["assetId"]
                 }

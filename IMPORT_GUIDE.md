@@ -36,11 +36,12 @@ Each asset uses a **compound `_id`** instead of MongoDB's default ObjectId:
 **Benefits**: No duplicate `modelId` and `id` fields, natural primary key, better query performance
 
 ### Relationships
-Each relationship uses a **compound `_id`** with the relationship endpoints:
+Each relationship uses a **compound `_id`** with the relationship id and endpoints:
 ```json
 {
   "_id": {
     "modelId": "model-20251030-123456",
+    "id": "rel-hosted-000001",
     "fromAssetId": "door-000001",
     "toAssetId": "wall-000001"
   },
@@ -48,7 +49,7 @@ Each relationship uses a **compound `_id`** with the relationship endpoints:
   "attributes": {...}
 }
 ```
-**Benefits**: No duplicate fields, prevents duplicate relationships, efficient lookups
+**Benefits**: No duplicate fields, guaranteed uniqueness (includes relationship id), efficient lookups
 
 ## 🚀 Import Methods
 
