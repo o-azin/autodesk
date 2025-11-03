@@ -798,6 +798,140 @@ class AECPayloadGenerator:
         return model_doc, assets, relationships
 
 
+def generate_multi_model_payload(num_models: int, assets_per_model: int,
+                                  relationships_per_model: int, output_dir: str = "aec_output"):
+    """Generate multiple models with their assets and relationships in the same files."""
+    from pathlib import Path
+
+    print("=" * 60)
+    print(f"AEC Multi-Model Generator")
+    print("=" * 60)
+    print(f"Generating {num_models} models")
+    print(f"  - {assets_per_model} assets per model")
+    print(f"  - {relationships_per_model} relationships per model")
+    print(f"  - Total: {num_models * assets_per_model:,} assets, {num_models * relationships_per_model:,} relationships")
+    print("=" * 60)
+
+    # Create output directory
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    # Prepare file paths
+    models_jsonl_file = output_path / "models.jsonl"
+    assets_jsonl_file = output_path / "assets.jsonl"
+    relationships_jsonl_file = output_path / "relationships.jsonl"
+
+    # Open all files for writing
+    with open(models_jsonl_file, 'w') as models_file, \
+         open(assets_jsonl_file, 'w') as assets_file, \
+         open(relationships_jsonl_file, 'w') as relationships_file:
+
+        total_assets_count = 0
+        total_relationships_count = 0
+
+        # Generate each model
+        for model_idx in range(num_models):
+            print(f"\nGenerating model {model_idx + 1}/{num_models}...")
+
+            # Create unique model ID
+            timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+            unique_model_id = f"model-{timestamp}-{model_idx:06d}"
+
+            # Create generator for this model
+            generator = AECPayloadGenerator(
+                total_assets=assets_per_model,
+                total_relationships=relationships_per_model,
+                model_id=unique_model_id
+            )
+
+            # Generate assets and relationships
+            assets = generator.generate_assets()
+            relationships = generator.generate_relationships()
+            stats, distribution = generator.calculate_statistics(assets)
+
+            # Create model document
+            model_doc = {
+                "modelId": generator.model_id,
+                "name": f"AEC Model {model_idx + 1}",
+                "description": f"Generated AEC model with {len(assets)} assets and {len(relationships)} relationships",
+                "createdAt": datetime.now().isoformat(),
+                "modelStatistics": stats,
+                "entityDistribution": distribution
+            }
+
+            # Write model document (JSONL format)
+            models_file.write(json.dumps(model_doc) + '\n')
+
+            # Transform and write assets
+            for asset in assets:
+                transformed_asset = {
+                    "_id": {
+                        "modelId": asset["modelId"],
+                        "id": asset["id"]
+                    }
+                }
+                # Copy all fields except modelId and id
+                for key, value in asset.items():
+                    if key not in ["modelId", "id"]:
+                        transformed_asset[key] = value
+
+                assets_file.write(json.dumps(transformed_asset) + '\n')
+                total_assets_count += 1
+
+            # Transform and write relationships
+            for rel in relationships:
+                transformed_rel = {
+                    "_id": {
+                        "modelId": rel["modelId"],
+                        "id": rel["id"],
+                        "fromAssetId": rel["from"]["assetId"],
+                        "toAssetId": rel["to"]["assetId"]
+                    }
+                }
+                # Copy all fields except modelId, id, and update from/to to remove assetId
+                for key, value in rel.items():
+                    if key in ["modelId", "id"]:
+                        continue
+                    elif key == "from":
+                        from_copy = {k: v for k, v in value.items() if k != "assetId"}
+                        if from_copy:
+                            transformed_rel["from"] = from_copy
+                    elif key == "to":
+                        to_copy = {k: v for k, v in value.items() if k != "assetId"}
+                        if to_copy:
+                            transformed_rel["to"] = to_copy
+                    else:
+                        transformed_rel[key] = value
+
+                relationships_file.write(json.dumps(transformed_rel) + '\n')
+                total_relationships_count += 1
+
+            if (model_idx + 1) % 100 == 0 or model_idx == num_models - 1:
+                print(f"  Progress: {model_idx + 1}/{num_models} models ({total_assets_count:,} assets, {total_relationships_count:,} relationships)")
+
+    # Get file sizes
+    models_size = models_jsonl_file.stat().st_size / (1024 * 1024)
+    assets_size = assets_jsonl_file.stat().st_size / (1024 * 1024)
+    relationships_size = relationships_jsonl_file.stat().st_size / (1024 * 1024)
+    total_size = models_size + assets_size + relationships_size
+
+    # Print summary
+    print("\n" + "=" * 60)
+    print("✓ Multi-model generation complete!")
+    print(f"  Output directory: {output_path}")
+    print(f"\n  Files created:")
+    print(f"    - models.jsonl ({models_size:.2f}MB, {num_models:,} documents)")
+    print(f"    - assets.jsonl ({assets_size:.2f}MB, {total_assets_count:,} documents)")
+    print(f"    - relationships.jsonl ({relationships_size:.2f}MB, {total_relationships_count:,} documents)")
+    print(f"    - Total size: {total_size:.2f}MB")
+    print(f"\n  Import to MongoDB:")
+    print(f"    cd {output_path}")
+    print(f"    mongoimport --db=<db_name> --collection=models --file=models.jsonl")
+    print(f"    mongoimport --db=<db_name> --collection=assets --file=assets.jsonl")
+    print(f"    mongoimport --db=<db_name> --collection=relationships --file=relationships.jsonl")
+    print("=" * 60)
+
+
 def main():
     """Main entry point."""
     import argparse
@@ -806,14 +940,16 @@ def main():
         description='Generate AEC model payloads as individual MongoDB documents',
         epilog='Example: python3 aec_payload_generator.py --assets 5000 --relationships 1000 --output-dir my_model'
     )
+    parser.add_argument('--models', type=int, default=1,
+                       help='Number of models to generate (default: 1)')
     parser.add_argument('--assets', type=int, default=10000,
-                       help='Number of assets to generate (default: 10000)')
+                       help='Number of assets to generate per model (default: 10000)')
     parser.add_argument('--relationships', type=int, default=2000,
-                       help='Number of relationships to generate (default: 2000)')
+                       help='Number of relationships to generate per model (default: 2000)')
     parser.add_argument('--output-dir', type=str, default='aec_output',
                        help='Output directory path (default: aec_output)')
     parser.add_argument('--model-id', type=str, default=None,
-                       help='Model ID (default: auto-generated timestamp)')
+                       help='Model ID prefix (default: auto-generated timestamp). Only used when --models=1')
     parser.add_argument('--seed', type=int, default=None,
                        help='Random seed for reproducibility')
 
@@ -823,13 +959,22 @@ def main():
         random.seed(args.seed)
         print(f"Using random seed: {args.seed}")
 
-    generator = AECPayloadGenerator(
-        total_assets=args.assets,
-        total_relationships=args.relationships,
-        model_id=args.model_id
-    )
-
-    generator.generate_payload(output_dir=args.output_dir)
+    if args.models == 1:
+        # Single model mode (original behavior)
+        generator = AECPayloadGenerator(
+            total_assets=args.assets,
+            total_relationships=args.relationships,
+            model_id=args.model_id
+        )
+        generator.generate_payload(output_dir=args.output_dir)
+    else:
+        # Multi-model mode
+        generate_multi_model_payload(
+            num_models=args.models,
+            assets_per_model=args.assets,
+            relationships_per_model=args.relationships,
+            output_dir=args.output_dir
+        )
 
 
 if __name__ == '__main__':

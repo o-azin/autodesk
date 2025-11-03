@@ -4,12 +4,12 @@ A Python generator that creates realistic Autodesk/AutoCAD drawing payloads as M
 
 ## Features
 
-- **Collection Files**: Single JSON file per collection (model, assets, relationships)
+- **Multi-Model Support**: Generate thousands of models in one command (NEW! 🎉)
+- **Collection Files**: Single JSONL file per collection (models, assets, relationships)
 - **Optimized Storage**: Compound `_id` keys eliminate duplicate fields and reduce storage
-- **MongoDB Ready**: JSON arrays ready for `mongoimport --jsonArray` or MongoDB Compass
-- **Scalable**: Can generate 1M+ assets (limited only by disk space and memory)
-- **10,000 Assets**: Generates realistic AEC assets across 8 categories (configurable)
-- **2,000 Relationships**: Creates meaningful relationships between assets (configurable)
+- **MongoDB Ready**: JSONL format for reliable `mongoimport` (no --jsonArray needed)
+- **Scalable**: Can generate 100M+ assets (limited only by disk space and memory)
+- **Configurable**: Specify number of models, assets per model, relationships per model
 - **Realistic Distribution**: Matches real-world Revit model patterns
 - **Proper Structure**: Follows Autodesk asset graph schema exactly
 - **Multi-tenant Support**: Compound keys include modelId for efficient multi-tenant queries
@@ -52,9 +52,10 @@ python3 --version
 
 ## Usage
 
-### Basic Usage (10K assets, 2K relationships)
+### Single Model Mode (Default)
 
 ```bash
+# Generate 1 model with 10K assets and 2K relationships
 python3 aec_payload_generator.py
 ```
 
@@ -65,30 +66,45 @@ This generates an `aec_output/` directory with 5 files:
 - `relationships.json` - JSON array with 2,000 relationships (for inspection)
 - `relationships.jsonl` - JSONL format for mongoimport
 
+### Multi-Model Mode (NEW! 🎉)
+
+```bash
+# Generate 10 models, each with 1000 assets and 500 relationships
+python3 aec_payload_generator.py --models 10 --assets 1000 --relationships 500
+
+# Generate 10,000 models, each with 10K assets and 5K relationships
+python3 aec_payload_generator.py --models 10000 --assets 10000 --relationships 5000 --output-dir large_multi
+```
+
+This generates 3 JSONL files:
+- `models.jsonl` - All model documents (one per line)
+- `assets.jsonl` - All assets from all models (one per line)
+- `relationships.jsonl` - All relationships from all models (one per line)
+
+**📖 See [MULTI_MODEL_GUIDE.md](MULTI_MODEL_GUIDE.md) for detailed multi-model documentation.**
+
 ### Custom Configuration
 
 ```bash
-# Generate 5K assets and 1K relationships
+# Single model with custom size
 python3 aec_payload_generator.py --assets 5000 --relationships 1000 --output-dir my_model
-
-# Specify custom model ID
-python3 aec_payload_generator.py --model-id "building-123" --output-dir building_123
 
 # Use random seed for reproducibility
 python3 aec_payload_generator.py --seed 42
 
-# Generate large dataset (100K assets)
+# Generate large single model (100K assets)
 python3 aec_payload_generator.py --assets 100000 --relationships 20000 --output-dir large_model
 ```
 
 ### Command Line Options
 
 ```
---assets N          Number of assets to generate (default: 10000)
---relationships N   Number of relationships to generate (default: 2000)
+--models N          Number of models to generate (default: 1)
+--assets N          Number of assets per model (default: 10000)
+--relationships N   Number of relationships per model (default: 2000)
 --output-dir DIR    Output directory path (default: aec_output)
---model-id ID       Model ID (default: auto-generated timestamp)
---seed N           Random seed for reproducibility
+--model-id ID       Model ID (only for single model mode)
+--seed N            Random seed for reproducibility
 ```
 ### Import to MongoDB
 
